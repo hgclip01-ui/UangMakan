@@ -142,7 +142,7 @@ body {
 }
 
 /* Hidden */
-.hidden { display: none; }
+.hidden { display: none !important; }
 
 /* Splash Screen */
 .splash {
@@ -189,9 +189,6 @@ body {
   font-size: 18px;
   flex-direction: column;
   gap: 12px;
-}
-#loading.hidden {
-  display: none;
 }
 .spinner {
   border: 4px solid rgba(255,255,255,0.3);
