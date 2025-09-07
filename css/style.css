@@ -1,15 +1,18 @@
-/* Tambahan styling custom */
+/* Background gradient + halus */
 body {
+  background: linear-gradient(135deg, #a78bfa, #60a5fa);
+  min-height: 100vh;
   -webkit-font-smoothing: antialiased;
 }
 
 button {
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, transform 0.1s;
 }
 
-.del-btn {
-  transition: transform 0.1s;
+button:hover {
+  transform: scale(1.05);
 }
+
 .del-btn:hover {
-  transform: scale(1.1);
+  transform: scale(1.2);
 }
