@@ -111,34 +111,66 @@ body {
 /* Export Area */
 #exportArea {
   background: linear-gradient(135deg, #0f172a, #1e3a8a, #2563eb);
-  padding: 16px;
+  padding: 24px;
   border-radius: 12px;
   color: white;
   width: 100%;
   max-width: 420px;
   margin: auto;
+  font-family: 'Segoe UI', sans-serif;
 }
+
 #exportArea h1 {
   text-align: center;
-  margin-bottom: 14px;
-  font-size: 18px;
+  margin-bottom: 20px;
+  font-size: 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.4);
+  padding-bottom: 8px;
 }
-#exportArea .total {
-  margin-top: 14px;
+
+/* Tabel export */
+#exportArea table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  font-size: 15px;
+}
+
+#exportArea th, #exportArea td {
+  padding: 8px;
+  text-align: left;
+}
+
+#exportArea th {
+  border-bottom: 1px solid rgba(255,255,255,0.5);
+  font-weight: bold;
+}
+
+#exportArea td:last-child {
+  text-align: right;
+}
+
+#exportArea .total-row {
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255,255,255,0.5);
+  font-weight: bold;
   font-size: 16px;
+  text-align: right;
 }
+
 .uang-sampah {
   text-align: right;
   font-style: italic;
-  color: white;
   margin-top: 4px;
   font-size: 13px;
 }
+
 #exportArea .footer {
   text-align: center;
-  margin-top: 14px;
-  font-size: 12px;
-  opacity: 0.8;
+  margin-top: 20px;
+  font-size: 13px;
+  opacity: 0.9;
 }
 
 /* Hidden */
