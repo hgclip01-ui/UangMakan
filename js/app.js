@@ -9,6 +9,10 @@ const listOrang = document.getElementById("listOrang");
 const grandTotalEl = document.getElementById("grandTotal");
 const downloadBtn = document.getElementById("downloadBtn");
 
+const listOrangExport = document.getElementById("listOrangExport");
+const grandTotalExport = document.getElementById("grandTotalExport");
+const tanggalNow = document.getElementById("tanggalNow");
+
 let data = [];
 const hargaPerHari = 6000; // Bisa diubah sesuai kebutuhan
 
@@ -73,10 +77,33 @@ function editOrang(index) {
   }
 }
 
+// Render untuk export
+function renderExport() {
+  listOrangExport.innerHTML = "";
+  let total = 0;
+
+  data.forEach((item, i) => {
+    const subtotal = item.hari * hargaPerHari;
+    total += subtotal;
+
+    const div = document.createElement("div");
+    div.innerHTML = `${i+1}. ${item.nama} - ${item.hari} Hari × Rp${hargaPerHari.toLocaleString()} = Rp${subtotal.toLocaleString()}`;
+    listOrangExport.appendChild(div);
+  });
+
+  grandTotalExport.innerText = "Rp " + total.toLocaleString();
+
+  // Tanggal sekarang
+  const now = new Date();
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  tanggalNow.innerText = now.toLocaleDateString("id-ID", options);
+}
+
 // Download PNG
 downloadBtn.addEventListener("click", () => {
-  html2canvas(app, {
-    backgroundColor: null,
+  renderExport();
+  html2canvas(document.getElementById("exportArea"), {
+    backgroundColor: "#0f172a", // biar gradient tetap terlihat
     scale: 2
   }).then(canvas => {
     const link = document.createElement("a");
