@@ -173,15 +173,15 @@ downloadBtn.addEventListener("click", () => {
     ctx.textAlign = "right";
     ctx.fillText(`Rp${subtotal.toLocaleString()}`, colSub.x + colSub.w - 8, y);
 
-    // Garis horizontal
-    y += 26;
+    // Garis antar baris (sedikit di bawah teks, biar tidak kena tulisan)
     ctx.beginPath();
-    ctx.moveTo(colNo.x, y);
-    ctx.lineTo(tableRight, y);
+    ctx.moveTo(colNo.x, y + 8);
+    ctx.lineTo(tableRight, y + 8);
     ctx.strokeStyle = "rgba(255,255,255,0.2)";
     ctx.stroke();
 
-    y += 4;
+    // Geser kursor ke baris berikut
+    y += rowHeight;
   });
 
   // Simpan posisi akhir tabel
