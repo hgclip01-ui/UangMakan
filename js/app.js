@@ -19,7 +19,7 @@ startBtn.addEventListener("click", () => {
   app.classList.remove("hidden");
 });
 
-// Load data dari localStorage kalau ada
+// Load data dari localStorage
 const saved = localStorage.getItem("uangMakanData");
 if (saved) {
   data = JSON.parse(saved);
@@ -67,8 +67,6 @@ function renderList() {
   });
 
   grandTotal.innerText = "Rp " + total.toLocaleString();
-
-  // Simpan ke localStorage setiap kali render
   localStorage.setItem("uangMakanData", JSON.stringify(data));
 }
 
@@ -90,18 +88,16 @@ function hapusOrang(i) {
   }
 }
 
-// Download PNG via Canvas API (rapih + striped table)
+// Download PNG
 downloadBtn.addEventListener("click", () => {
   const rowHeight = 30;
   const headerHeight = 150;
   const footerHeight = 150;
-
   const contentHeight = data.length * rowHeight;
   const canvasHeight = headerHeight + contentHeight + footerHeight;
 
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
-
   canvas.width = 800;
   canvas.height = Math.max(400, canvasHeight);
 
@@ -119,25 +115,24 @@ downloadBtn.addEventListener("click", () => {
   ctx.textAlign = "center";
   ctx.fillText("📑 Catatan Uang Makan", canvas.width / 2, 60);
 
-  // Definisi kolom (x kiri + lebar)
+  // Definisi kolom
   const colNo   = { x: 60,  w: 50 };
   const colNama = { x: 110, w: 260 };
   const colHari = { x: 370, w: 170 };
   const colSub  = { x: 540, w: 200 };
   const tableRight = colSub.x + colSub.w;
 
-  // Header tabel
+  // Header
   ctx.font = "bold 16px Segoe UI";
   ctx.textAlign = "center"; ctx.fillText("No", colNo.x + colNo.w/2, 110);
   ctx.textAlign = "left";   ctx.fillText("Nama", colNama.x + 8, 110);
   ctx.textAlign = "center"; ctx.fillText("Hari", colHari.x + colHari.w/2, 110);
   ctx.textAlign = "right";  ctx.fillText("Subtotal", colSub.x + colSub.w - 8, 110);
 
-  // Border luar tabel
+  // Garis atas header
   ctx.beginPath();
-  ctx.moveTo(colNo.x, 90); ctx.lineTo(tableRight, 90); // atas
-  ctx.moveTo(colNo.x, 90); ctx.lineTo(colNo.x, canvas.height - footerHeight); // kiri
-  ctx.moveTo(tableRight, 90); ctx.lineTo(tableRight, canvas.height - footerHeight); // kanan
+  ctx.moveTo(colNo.x, 90);
+  ctx.lineTo(tableRight, 90);
   ctx.strokeStyle = "rgba(255,255,255,0.8)";
   ctx.stroke();
 
@@ -145,14 +140,6 @@ downloadBtn.addEventListener("click", () => {
   ctx.beginPath();
   ctx.moveTo(colNo.x, 120);
   ctx.lineTo(tableRight, 120);
-  ctx.stroke();
-
-  // Garis vertikal kolom
-  ctx.beginPath();
-  ctx.moveTo(colNo.x + colNo.w, 90); ctx.lineTo(colNo.x + colNo.w, canvas.height - footerHeight);
-  ctx.moveTo(colNama.x + colNama.w, 90); ctx.lineTo(colNama.x + colNama.w, canvas.height - footerHeight);
-  ctx.moveTo(colHari.x + colHari.w, 90); ctx.lineTo(colHari.x + colHari.w, canvas.height - footerHeight);
-  ctx.strokeStyle = "rgba(255,255,255,0.3)";
   ctx.stroke();
 
   // Data baris
@@ -163,7 +150,7 @@ downloadBtn.addEventListener("click", () => {
     const subtotal = item.hari * hargaPerHari;
     total += subtotal;
 
-    // Background selang-seling
+    // Background striped
     if (i % 2 === 0) {
       ctx.fillStyle = "rgba(255,255,255,0.05)";
       ctx.fillRect(colNo.x, y - 20, tableRight - colNo.x, rowHeight);
@@ -186,21 +173,37 @@ downloadBtn.addEventListener("click", () => {
     ctx.textAlign = "right";
     ctx.fillText(`Rp${subtotal.toLocaleString()}`, colSub.x + colSub.w - 8, y);
 
-    // Garis horizontal antar baris
+    // Garis horizontal
     y += 26;
     ctx.beginPath();
     ctx.moveTo(colNo.x, y);
     ctx.lineTo(tableRight, y);
-    ctx.strokeStyle = "rgba(255,255,255,0.15)";
+    ctx.strokeStyle = "rgba(255,255,255,0.2)";
     ctx.stroke();
 
     y += 4;
   });
 
-  // Border bawah tabel
+  // Simpan posisi akhir tabel
+  const endY = y;
+
+  // Border kiri
   ctx.beginPath();
-  ctx.moveTo(colNo.x, y);
-  ctx.lineTo(tableRight, y);
+  ctx.moveTo(colNo.x, 90);
+  ctx.lineTo(colNo.x, endY);
+  ctx.strokeStyle = "rgba(255,255,255,0.8)";
+  ctx.stroke();
+
+  // Border kanan
+  ctx.beginPath();
+  ctx.moveTo(tableRight, 90);
+  ctx.lineTo(tableRight, endY);
+  ctx.stroke();
+
+  // Garis bawah tabel
+  ctx.beginPath();
+  ctx.moveTo(colNo.x, endY);
+  ctx.lineTo(tableRight, endY);
   ctx.strokeStyle = "rgba(255,255,255,0.8)";
   ctx.stroke();
 
