@@ -19,6 +19,13 @@ startBtn.addEventListener("click", () => {
   app.classList.remove("hidden");
 });
 
+// Load data dari localStorage kalau ada
+const saved = localStorage.getItem("uangMakanData");
+if (saved) {
+  data = JSON.parse(saved);
+  renderList();
+}
+
 // Tambah data
 addBtn.addEventListener("click", () => {
   const nama = namaInput.value.trim();
@@ -60,6 +67,9 @@ function renderList() {
   });
 
   grandTotal.innerText = "Rp " + total.toLocaleString();
+
+  // Simpan ke localStorage setiap kali render
+  localStorage.setItem("uangMakanData", JSON.stringify(data));
 }
 
 // Edit
@@ -80,7 +90,7 @@ function hapusOrang(i) {
   }
 }
 
-// Download PNG via Canvas API (dinamis)
+// Download PNG via Canvas API (dinamis + rapi tabel)
 downloadBtn.addEventListener("click", () => {
   const rowHeight = 30;   // tinggi tiap baris data
   const headerHeight = 150;
@@ -113,10 +123,10 @@ downloadBtn.addEventListener("click", () => {
   // Header tabel
   ctx.textAlign = "left";
   ctx.font = "bold 16px Segoe UI";
-  ctx.fillText("No", 70, 110);
-  ctx.fillText("Nama", 150, 110);
-  ctx.fillText("Hari", 400, 110);
-  ctx.fillText("Subtotal", 560, 110);
+  ctx.fillText("No", 65, 110);
+  ctx.fillText("Nama", 135, 110);
+  ctx.fillText("Hari", 385, 110);
+  ctx.fillText("Subtotal", 555, 110);
 
   // Garis bawah header
   ctx.beginPath();
@@ -127,8 +137,8 @@ downloadBtn.addEventListener("click", () => {
 
   // Garis vertikal kolom
   ctx.beginPath();
-  ctx.moveTo(120, 100); ctx.lineTo(120, canvas.height - footerHeight);
-  ctx.moveTo(380, 100); ctx.lineTo(380, canvas.height - footerHeight);
+  ctx.moveTo(110, 100); ctx.lineTo(110, canvas.height - footerHeight);
+  ctx.moveTo(370, 100); ctx.lineTo(370, canvas.height - footerHeight);
   ctx.moveTo(540, 100); ctx.lineTo(540, canvas.height - footerHeight);
   ctx.strokeStyle = "rgba(255,255,255,0.3)";
   ctx.stroke();
@@ -141,10 +151,10 @@ downloadBtn.addEventListener("click", () => {
     const subtotal = item.hari * hargaPerHari;
     total += subtotal;
 
-    ctx.fillText(`${i+1}`, 70, y);
-    ctx.fillText(item.nama, 150, y);
-    ctx.fillText(`${item.hari} × Rp${hargaPerHari.toLocaleString()}`, 400, y);
-    ctx.fillText(`Rp${subtotal.toLocaleString()}`, 560, y);
+    ctx.fillText(`${i+1}`, 65, y);
+    ctx.fillText(item.nama, 135, y);
+    ctx.fillText(`${item.hari} × Rp${hargaPerHari.toLocaleString()}`, 385, y);
+    ctx.fillText(`Rp${subtotal.toLocaleString()}`, 555, y);
 
     // Garis pemisah antar baris
     y += 26;
@@ -161,12 +171,12 @@ downloadBtn.addEventListener("click", () => {
   y += 30;
   ctx.font = "bold 18px Segoe UI";
   ctx.fillText("Total:", 400, y);
-  ctx.fillText(`Rp ${total.toLocaleString()}`, 560, y);
+  ctx.fillText(`Rp ${total.toLocaleString()}`, 555, y);
 
   // Uang sampah
   y += 30;
   ctx.font = "italic 14px Segoe UI";
-  ctx.fillText("+ Uang Sampah", 560, y);
+  ctx.fillText("+ Uang Sampah", 555, y);
 
   // Tanggal
   y += 60;
