@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Catatan Uang Makan</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="bg-gray-100 min-h-screen p-6">
+  <div class="max-w-4xl mx-auto">
+    <header class="mb-6 text-center">
+      <h1 class="text-3xl font-bold text-purple-700">📒 Catatan Uang Makan</h1>
+      <p class="text-gray-500">Rp6.000 per hari</p>
+    </header>
+
+    <!-- Input Form -->
+    <section class="bg-white p-4 rounded-xl shadow mb-6">
+      <div class="grid md:grid-cols-3 gap-4">
+        <div>
+          <label class="text-sm block mb-1">Nama Orang</label>
+          <input id="inp-name" type="text" placeholder="Contoh: Budi" class="w-full border rounded px-3 py-2" />
+        </div>
+        <div>
+          <label class="text-sm block mb-1">Jumlah Hari</label>
+          <input id="inp-days" type="number" placeholder="0" class="w-full border rounded px-3 py-2" />
+        </div>
+        <div class="flex items-end">
+          <button id="btn-add" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded">Tambah</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Laporan -->
+    <section id="capture" class="bg-white p-4 rounded-xl shadow">
+      <div class="flex justify-between items-center mb-3">
+        <h2 class="text-xl font-semibold">Laporan</h2>
+        <span class="text-gray-500">Total: <span id="grand-total" class="font-bold">Rp0</span></span>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="min-w-full table-auto border">
+          <thead>
+            <tr class="bg-gray-50 text-left">
+              <th class="px-3 py-2">Nama</th>
+              <th class="px-3 py-2">Hari</th>
+              <th class="px-3 py-2">Total</th>
+              <th class="px-3 py-2"></th>
+            </tr>
+          </thead>
+          <tbody id="tbody">
+            <tr><td colspan="4" class="px-3 py-6 text-center text-sm text-gray-500">Belum ada data</td></tr>
+          </tbody>
+          <tfoot>
+            <tr class="bg-gray-50 font-bold">
+              <td class="px-3 py-2" colspan="2">GRAND TOTAL</td>
+              <td class="px-3 py-2" id="tfoot-total">Rp0</td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <p class="text-xs text-gray-400 mt-2">* Total dihitung otomatis = Hari × Rp6.000</p>
+    </section>
+
+    <!-- Actions -->
+    <div class="mt-4 flex flex-wrap gap-2 no-print">
+      <button id="btn-png" class="px-4 py-2 bg-indigo-600 text-white rounded">Export PNG</button>
+      <button id="btn-csv" class="px-4 py-2 bg-gray-800 text-white rounded">Download CSV</button>
+      <button id="btn-print" class="px-4 py-2 bg-white border rounded">Print</button>
+      <button id="btn-clear" class="px-4 py-2 bg-red-50 text-red-600 border rounded">Hapus Semua</button>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/html-to-image@1.11.12/dist/html-to-image.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
