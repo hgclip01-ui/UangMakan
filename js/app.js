@@ -1,9 +1,7 @@
 // Utilities
 const $ = id => document.getElementById(id);
-const formatIDR = n => {
-  const num = Number(n) || 0;
-  return num.toLocaleString('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 });
-};
+const formatIDR = n => (Number(n) || 0).toLocaleString('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 });
+const nowString = () => new Date().toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'short' });
 
 // Konstanta
 const RATE = 6000;
@@ -18,9 +16,10 @@ const btnCSV = $('btn-csv');
 const btnPrint = $('btn-print');
 const btnClear = $('btn-clear');
 const tbody = $('tbody');
-const totalEl = $('total');
+const tfootSummary = $('tfoot-summary');
 const tfootTotal = $('tfoot-total');
 const capture = $('capture');
+const timestampEl = $('timestamp');
 
 // Storage
 const load = () => {
@@ -28,7 +27,6 @@ const load = () => {
   catch(e) { return []; }
 };
 let items = load();
-
 const save = () => localStorage.setItem(KEY, JSON.stringify(items));
 
 // Render Table
@@ -51,9 +49,11 @@ const render = () => {
       tbody.appendChild(tr);
     });
   }
+  const totalHari = items.reduce((s,i)=>s+i.days,0);
   const total = items.reduce((s, i) => s + (i.days * RATE), 0);
-  totalEl.textContent = formatIDR(total);
+  tfootSummary.textContent = `${items.length} orang, ${totalHari} hari`;
   tfootTotal.textContent = formatIDR(total);
+  timestampEl.textContent = `Generated at: ${nowString()}`;
   save();
 };
 render();
@@ -92,22 +92,18 @@ btnPrint.addEventListener('click', () => window.print());
 // CSV Download
 btnCSV.addEventListener('click', () => {
   if (items.length === 0) return alert('Belum ada data untuk diunduh');
-
-  const header = ['Nama','Hari','Total(IDR)'];
-  const rows = items.map(it => [it.name, it.days, it.days * RATE]);
+  const header = [`Catatan Uang Makan - ${nowString()}`, '', 'Nama,Hari,Total(IDR)'];
+  const rows = items.map(it => [it.name, it.days, it.days * RATE].join(','));
+  const totalHari = items.reduce((s,i)=>s+i.days,0);
   const total = items.reduce((s,i)=>s+(i.days*RATE),0);
-  const csv = [header, ...rows, ['', 'TOTAL', total]].map(r => r.join(',')).join('\n');
-
+  const footer = ['', `TOTAL: ${totalHari} hari, ${formatIDR(total)}`];
+  const csv = [...header, ...rows, ...footer].join('\n');
   const blob = new Blob(['\ufeff' + csv], {type:'text/csv;charset=utf-8;'});
   const url = URL.createObjectURL(blob);
-
   const a = document.createElement('a');
-  a.style.display = 'none';
   a.href = url;
-  a.download = 'Catatan-Uang-Makan.csv';
-  document.body.appendChild(a);
+  a.download = `Catatan-Uang-Makan-${Date.now()}.csv`;
   a.click();
-  document.body.removeChild(a);
   URL.revokeObjectURL(url);
 });
 
@@ -121,12 +117,9 @@ btnPNG.addEventListener('click', async () => {
       backgroundColor: 'white'
     });
     const a = document.createElement('a');
-    a.style.display = 'none';
     a.href = dataUrl;
     a.download = `Catatan-Uang-Makan-${Date.now()}.png`;
-    document.body.appendChild(a);
     a.click();
-    document.body.removeChild(a);
   } catch(err) {
     console.error(err);
     alert('Gagal export PNG, cek console browser.');
