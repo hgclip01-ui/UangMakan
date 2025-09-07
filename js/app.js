@@ -90,9 +90,9 @@ function hapusOrang(i) {
   }
 }
 
-// Download PNG via Canvas API (dinamis + rapi tabel)
+// Download PNG via Canvas API (dinamis + tabel grid)
 downloadBtn.addEventListener("click", () => {
-  const rowHeight = 30;   // tinggi tiap baris data
+  const rowHeight = 30;
   const headerHeight = 150;
   const footerHeight = 150;
 
@@ -102,7 +102,6 @@ downloadBtn.addEventListener("click", () => {
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
 
-  // Ukuran canvas dinamis
   canvas.width = 800;
   canvas.height = Math.max(400, canvasHeight);
 
@@ -120,26 +119,32 @@ downloadBtn.addEventListener("click", () => {
   ctx.textAlign = "center";
   ctx.fillText("📑 Catatan Uang Makan", canvas.width / 2, 60);
 
+  // Definisi kolom
+  const colNo = { x: 60, w: 50 };      // kolom "No"
+  const colNama = { x: 110, w: 260 };  // kolom "Nama"
+  const colHari = { x: 370, w: 170 };  // kolom "Hari"
+  const colSub = { x: 540, w: 200 };   // kolom "Subtotal"
+
   // Header tabel
   ctx.textAlign = "left";
   ctx.font = "bold 16px Segoe UI";
-  ctx.fillText("No", 65, 110);
-  ctx.fillText("Nama", 135, 110);
-  ctx.fillText("Hari", 385, 110);
-  ctx.fillText("Subtotal", 555, 110);
+  ctx.fillText("No", colNo.x + 5, 110);
+  ctx.fillText("Nama", colNama.x + 5, 110);
+  ctx.fillText("Hari", colHari.x + 5, 110);
+  ctx.fillText("Subtotal", colSub.x + 5, 110);
 
   // Garis bawah header
   ctx.beginPath();
-  ctx.moveTo(60, 120);
-  ctx.lineTo(740, 120);
+  ctx.moveTo(colNo.x, 120);
+  ctx.lineTo(colSub.x + colSub.w, 120);
   ctx.strokeStyle = "rgba(255,255,255,0.8)";
   ctx.stroke();
 
   // Garis vertikal kolom
   ctx.beginPath();
-  ctx.moveTo(110, 100); ctx.lineTo(110, canvas.height - footerHeight);
-  ctx.moveTo(370, 100); ctx.lineTo(370, canvas.height - footerHeight);
-  ctx.moveTo(540, 100); ctx.lineTo(540, canvas.height - footerHeight);
+  ctx.moveTo(colNo.x + colNo.w, 100); ctx.lineTo(colNo.x + colNo.w, canvas.height - footerHeight);
+  ctx.moveTo(colNama.x + colNama.w, 100); ctx.lineTo(colNama.x + colNama.w, canvas.height - footerHeight);
+  ctx.moveTo(colHari.x + colHari.w, 100); ctx.lineTo(colHari.x + colHari.w, canvas.height - footerHeight);
   ctx.strokeStyle = "rgba(255,255,255,0.3)";
   ctx.stroke();
 
@@ -151,32 +156,32 @@ downloadBtn.addEventListener("click", () => {
     const subtotal = item.hari * hargaPerHari;
     total += subtotal;
 
-    ctx.fillText(`${i+1}`, 65, y);
-    ctx.fillText(item.nama, 135, y);
-    ctx.fillText(`${item.hari} × Rp${hargaPerHari.toLocaleString()}`, 385, y);
-    ctx.fillText(`Rp${subtotal.toLocaleString()}`, 555, y);
+    ctx.fillText(`${i+1}`, colNo.x + 5, y);
+    ctx.fillText(item.nama, colNama.x + 5, y);
+    ctx.fillText(`${item.hari} × Rp${hargaPerHari.toLocaleString()}`, colHari.x + 5, y);
+    ctx.fillText(`Rp${subtotal.toLocaleString()}`, colSub.x + 5, y);
 
-    // Garis pemisah antar baris
+    // Garis horizontal antar baris
     y += 26;
     ctx.beginPath();
-    ctx.moveTo(60, y);
-    ctx.lineTo(740, y);
+    ctx.moveTo(colNo.x, y);
+    ctx.lineTo(colSub.x + colSub.w, y);
     ctx.strokeStyle = "rgba(255,255,255,0.15)";
     ctx.stroke();
 
-    y += 4; // spasi antar baris
+    y += 4;
   });
 
   // Total
   y += 30;
   ctx.font = "bold 18px Segoe UI";
-  ctx.fillText("Total:", 400, y);
-  ctx.fillText(`Rp ${total.toLocaleString()}`, 555, y);
+  ctx.fillText("Total:", colHari.x + 15, y);
+  ctx.fillText(`Rp ${total.toLocaleString()}`, colSub.x + 5, y);
 
   // Uang sampah
   y += 30;
   ctx.font = "italic 14px Segoe UI";
-  ctx.fillText("+ Uang Sampah", 555, y);
+  ctx.fillText("+ Uang Sampah", colSub.x + 5, y);
 
   // Tanggal
   y += 60;
