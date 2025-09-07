@@ -122,7 +122,12 @@ downloadBtn.addEventListener("click", () => {
   const colSub  = { x: 540, w: 200 };
   const tableRight = colSub.x + colSub.w;
 
-  // Header
+  // Highlight header background
+  ctx.fillStyle = "rgba(255,255,255,0.1)";
+  ctx.fillRect(colNo.x, 90, tableRight - colNo.x, 30);
+
+  // Header teks
+  ctx.fillStyle = "white";
   ctx.font = "bold 16px Segoe UI";
   ctx.textAlign = "center"; ctx.fillText("No", colNo.x + colNo.w/2, 110);
   ctx.textAlign = "left";   ctx.fillText("Nama", colNama.x + 8, 110);
@@ -173,14 +178,13 @@ downloadBtn.addEventListener("click", () => {
     ctx.textAlign = "right";
     ctx.fillText(`Rp${subtotal.toLocaleString()}`, colSub.x + colSub.w - 8, y);
 
-    // Garis antar baris (sedikit di bawah teks, biar tidak kena tulisan)
+    // Garis antar baris
     ctx.beginPath();
     ctx.moveTo(colNo.x, y + 8);
     ctx.lineTo(tableRight, y + 8);
     ctx.strokeStyle = "rgba(255,255,255,0.2)";
     ctx.stroke();
 
-    // Geser kursor ke baris berikut
     y += rowHeight;
   });
 
@@ -198,6 +202,14 @@ downloadBtn.addEventListener("click", () => {
   ctx.beginPath();
   ctx.moveTo(tableRight, 90);
   ctx.lineTo(tableRight, endY);
+  ctx.stroke();
+
+  // Garis pemisah antar kolom
+  ctx.beginPath();
+  ctx.moveTo(colNo.x + colNo.w, 90); ctx.lineTo(colNo.x + colNo.w, endY);
+  ctx.moveTo(colNama.x + colNama.w, 90); ctx.lineTo(colNama.x + colNama.w, endY);
+  ctx.moveTo(colHari.x + colHari.w, 90); ctx.lineTo(colHari.x + colHari.w, endY);
+  ctx.strokeStyle = "rgba(255,255,255,0.4)";
   ctx.stroke();
 
   // Garis bawah tabel
