@@ -80,14 +80,21 @@ function hapusOrang(i) {
   }
 }
 
-// Download PNG via Canvas API
+// Download PNG via Canvas API (dinamis)
 downloadBtn.addEventListener("click", () => {
+  const rowHeight = 30;   // tinggi tiap baris data
+  const headerHeight = 150;
+  const footerHeight = 150;
+
+  const contentHeight = data.length * rowHeight;
+  const canvasHeight = headerHeight + contentHeight + footerHeight;
+
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
 
-  // Ukuran canvas
+  // Ukuran canvas dinamis
   canvas.width = 800;
-  canvas.height = 1100;
+  canvas.height = Math.max(400, canvasHeight);
 
   // Background gradient
   const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
@@ -103,30 +110,66 @@ downloadBtn.addEventListener("click", () => {
   ctx.textAlign = "center";
   ctx.fillText("📑 Catatan Uang Makan", canvas.width / 2, 60);
 
-  // Data
+  // Header tabel
   ctx.textAlign = "left";
-  ctx.font = "16px Segoe UI";
-  let y = 120;
+  ctx.font = "bold 16px Segoe UI";
+  ctx.fillText("No", 70, 110);
+  ctx.fillText("Nama", 150, 110);
+  ctx.fillText("Hari", 400, 110);
+  ctx.fillText("Subtotal", 560, 110);
+
+  // Garis bawah header
+  ctx.beginPath();
+  ctx.moveTo(60, 120);
+  ctx.lineTo(740, 120);
+  ctx.strokeStyle = "rgba(255,255,255,0.8)";
+  ctx.stroke();
+
+  // Garis vertikal kolom
+  ctx.beginPath();
+  ctx.moveTo(120, 100); ctx.lineTo(120, canvas.height - footerHeight);
+  ctx.moveTo(380, 100); ctx.lineTo(380, canvas.height - footerHeight);
+  ctx.moveTo(540, 100); ctx.lineTo(540, canvas.height - footerHeight);
+  ctx.strokeStyle = "rgba(255,255,255,0.3)";
+  ctx.stroke();
+
+  // Data baris
+  ctx.font = "14px Segoe UI";
+  let y = 150;
   let total = 0;
   data.forEach((item, i) => {
     const subtotal = item.hari * hargaPerHari;
     total += subtotal;
-    ctx.fillText(`${i+1}. ${item.nama} - ${item.hari} Hari × Rp${hargaPerHari.toLocaleString()} = Rp${subtotal.toLocaleString()}`, 60, y);
-    y += 28;
+
+    ctx.fillText(`${i+1}`, 70, y);
+    ctx.fillText(item.nama, 150, y);
+    ctx.fillText(`${item.hari} × Rp${hargaPerHari.toLocaleString()}`, 400, y);
+    ctx.fillText(`Rp${subtotal.toLocaleString()}`, 560, y);
+
+    // Garis pemisah antar baris
+    y += 26;
+    ctx.beginPath();
+    ctx.moveTo(60, y);
+    ctx.lineTo(740, y);
+    ctx.strokeStyle = "rgba(255,255,255,0.15)";
+    ctx.stroke();
+
+    y += 4; // spasi antar baris
   });
 
   // Total
-  y += 20;
+  y += 30;
   ctx.font = "bold 18px Segoe UI";
-  ctx.fillText(`Total: Rp ${total.toLocaleString()}`, 60, y);
+  ctx.fillText("Total:", 400, y);
+  ctx.fillText(`Rp ${total.toLocaleString()}`, 560, y);
 
   // Uang sampah
-  y += 26;
+  y += 30;
   ctx.font = "italic 14px Segoe UI";
-  ctx.fillText("+ Uang Sampah", 60, y);
+  ctx.fillText("+ Uang Sampah", 560, y);
 
   // Tanggal
-  y += 50;
+  y += 60;
   const now = new Date();
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
   ctx.font = "12px Segoe UI";
