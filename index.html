@@ -7,48 +7,29 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <!-- Splash Screen -->
-  <div id="splash">
-    <img src="assets/logo.png" alt="Logo" class="logo">
-    <h1>Catatan Uang Makan</h1>
-    <button id="mulaiBtn">Mulai</button>
-  </div>
-
-  <!-- Aplikasi -->
-  <div id="app" class="hidden">
+  <div id="app" class="glass">
     <h1 class="judul">Catatan Uang Makan</h1>
 
-    <div class="input-area glass">
+    <div class="input-area">
       <input type="text" id="namaInput" placeholder="Nama Orang">
       <input type="number" id="hariInput" placeholder="Jumlah Hari">
-      <button id="tambahBtn">+</button>
+      <button id="addBtn">+</button>
     </div>
 
     <div id="listOrang" class="list"></div>
 
-    <div class="total glass">
+    <div class="total">
       <span>Total</span>
       <strong id="grandTotal">Rp 0</strong>
     </div>
 
-    <button id="downloadBtn" class="download">
-      📸 Download PNG
-    </button>
+    <button id="downloadBtn" class="download">📸 Download PNG</button>
   </div>
 
-  <!-- Area untuk export PNG -->
-  <div id="exportArea" class="hidden">
-    <h1>Catatan Uang Makan</h1>
-    <div id="listOrangExport"></div>
-    <div class="total">
-      <span>Total</span>
-      <strong id="grandTotalExport">Rp 0</strong>
-    </div>
-    <p class="uang-sampah">+ Uang Sampah</p>
-    <p class="footer"><span id="tanggalNow"></span></p>
-  </div>
+  <!-- area export (hidden di UI tapi dipakai saat download) -->
+  <div id="exportArea" class="hidden"></div>
 
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="libs/html2canvas.min.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
