@@ -113,7 +113,7 @@ downloadBtn.addEventListener("click", () => {
   ctx.fillStyle = "white";
   ctx.font = "bold 24px Segoe UI";
   ctx.textAlign = "center";
-  ctx.fillText("📑 Catatan Uang Makan", canvas.width / 2, 60);
+  ctx.fillText("📑 Catatan Uang Makan supplier", canvas.width / 2, 60);
 
   // Definisi kolom
   const colNo   = { x: 60,  w: 50 };
