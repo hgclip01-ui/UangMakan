@@ -9,6 +9,15 @@ const grandTotal = document.getElementById("grandTotal");
 const downloadBtn = document.getElementById("downloadBtn");
 const exportArea = document.getElementById("exportArea");
 
+// Splash screen
+const splash = document.getElementById("splash");
+const startBtn = document.getElementById("startBtn");
+const app = document.getElementById("app");
+startBtn.addEventListener("click", () => {
+  splash.classList.add("hidden");
+  app.classList.remove("hidden");
+});
+
 // Tambah data
 addBtn.addEventListener("click", () => {
   const nama = namaInput.value.trim();
@@ -92,7 +101,7 @@ function renderExport() {
     total += subtotal;
 
     const div = document.createElement("div");
-    div.innerHTML = `${i+1}. ${item.nama} - ${item.hari} Hari × Rp${hargaPerHari.toLocaleString()} = Rp${subtotal.toLocaleString()}`;
+    div.innerText = `${i+1}. ${item.nama} - ${item.hari} Hari × Rp${hargaPerHari.toLocaleString()} = Rp${subtotal.toLocaleString()}`;
     listExport.appendChild(div);
   });
 
@@ -104,19 +113,28 @@ function renderExport() {
   document.getElementById("tanggalNow").innerText = now.toLocaleDateString("id-ID", options);
 }
 
-// Download PNG
+// Download JPG
 downloadBtn.addEventListener("click", () => {
   renderExport();
-  html2canvas(exportArea, {
-    backgroundColor: "#0f172a",
-    scale: 2
-  }).then(canvas => {
-    const link = document.createElement("a");
-    link.download = "uang-makan.png";
-    link.href = canvas.toDataURL("image/png");
-    link.click();
-  }).catch(err => {
-    console.error("Gagal download:", err);
-    alert("Download gagal, coba ulangi.");
-  });
+  exportArea.classList.remove("hidden");
+  document.getElementById("loading").classList.remove("hidden"); // tampilkan spinner
+
+  setTimeout(() => {
+    html2canvas(exportArea, {
+      backgroundColor: "#0f172a",
+      scale: 2
+    }).then(canvas => {
+      const link = document.createElement("a");
+      link.download = "uang-makan.jpg";
+      link.href = canvas.toDataURL("image/jpeg", 0.9);
+      link.click();
+
+      exportArea.classList.add("hidden");
+      document.getElementById("loading").classList.add("hidden"); // sembunyikan spinner
+    }).catch(err => {
+      console.error("Gagal download:", err);
+      alert("Download gagal, coba ulangi.");
+      document.getElementById("loading").classList.add("hidden"); // sembunyikan spinner
+    });
+  }, 300);
 });
