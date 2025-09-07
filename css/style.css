@@ -1,4 +1,15 @@
-/* Style tambahan (opsional) */
+/* Tambahan styling custom */
 body {
-  font-family: system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  transition: background-color 0.2s;
+}
+
+.del-btn {
+  transition: transform 0.1s;
+}
+.del-btn:hover {
+  transform: scale(1.1);
 }
