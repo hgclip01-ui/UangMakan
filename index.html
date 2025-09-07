@@ -2,74 +2,73 @@
 <html lang="id">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Catatan Uang Makan</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css" />
+  <link href="css/style.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100 min-h-screen p-6">
+<body class="bg-gray-100 p-6">
   <div class="max-w-4xl mx-auto">
     <header class="mb-6 text-center">
-      <h1 class="text-3xl font-bold text-purple-700">📒 Catatan Uang Makan</h1>
-      <p class="text-gray-500">Rp6.000 per hari</p>
+      <h1 class="text-3xl font-bold text-purple-700">🍽️ Catatan Uang Makan</h1>
+      <p class="text-gray-500">Hitung otomatis uang makan Rp6.000 per hari</p>
     </header>
 
-    <!-- Input Form -->
+    <!-- Form Input -->
     <section class="bg-white p-4 rounded-xl shadow mb-6">
-      <div class="grid md:grid-cols-3 gap-4">
-        <div>
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-3">
+        <div class="md:col-span-5">
           <label class="text-sm block mb-1">Nama Orang</label>
-          <input id="inp-name" type="text" placeholder="Contoh: Budi" class="w-full border rounded px-3 py-2" />
+          <input id="inp-name" type="text" placeholder="Contoh: Andi" class="w-full border rounded px-3 py-2" />
         </div>
-        <div>
+        <div class="md:col-span-4">
           <label class="text-sm block mb-1">Jumlah Hari</label>
           <input id="inp-days" type="number" placeholder="0" class="w-full border rounded px-3 py-2" />
         </div>
-        <div class="flex items-end">
-          <button id="btn-add" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded">Tambah</button>
+        <div class="md:col-span-3 flex items-end">
+          <button id="btn-add" class="w-full px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700">Tambah</button>
         </div>
+      </div>
+      <div class="mt-3 flex flex-wrap gap-2">
+        <button id="btn-png" class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700">Export PNG</button>
+        <button id="btn-csv" class="px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-900">Download CSV</button>
+        <button id="btn-print" class="px-4 py-2 bg-white border rounded hover:bg-gray-50">Print</button>
+        <button id="btn-clear" class="px-4 py-2 bg-red-50 text-red-600 border rounded hover:bg-red-100">Hapus Semua</button>
       </div>
     </section>
 
-    <!-- Laporan -->
+    <!-- Tabel Data -->
     <section id="capture" class="bg-white p-4 rounded-xl shadow">
-      <div class="flex justify-between items-center mb-3">
-        <h2 class="text-xl font-semibold">Laporan</h2>
-        <span class="text-gray-500">Total: <span id="grand-total" class="font-bold">Rp0</span></span>
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-lg font-semibold">Daftar Uang Makan</h2>
+        <div class="text-sm text-gray-500">Grand Total: <span id="total" class="font-semibold">Rp0</span></div>
       </div>
 
       <div class="overflow-x-auto">
-        <table class="min-w-full table-auto border">
+        <table class="min-w-full table-auto">
           <thead>
             <tr class="bg-gray-50 text-left">
-              <th class="px-3 py-2">Nama</th>
-              <th class="px-3 py-2">Hari</th>
-              <th class="px-3 py-2">Total</th>
-              <th class="px-3 py-2"></th>
+              <th class="px-3 py-2 w-1/3">Nama</th>
+              <th class="px-3 py-2 w-28">Hari</th>
+              <th class="px-3 py-2 w-40">Total</th>
+              <th class="px-3 py-2 w-16"></th>
             </tr>
           </thead>
           <tbody id="tbody">
             <tr><td colspan="4" class="px-3 py-6 text-center text-sm text-gray-500">Belum ada data</td></tr>
           </tbody>
           <tfoot>
-            <tr class="bg-gray-50 font-bold">
-              <td class="px-3 py-2" colspan="2">GRAND TOTAL</td>
-              <td class="px-3 py-2" id="tfoot-total">Rp0</td>
+            <tr class="bg-gray-50">
+              <td class="px-3 py-3 font-medium" colspan="2">TOTAL</td>
+              <td class="px-3 py-3 font-bold" id="tfoot-total">Rp0</td>
               <td></td>
             </tr>
           </tfoot>
         </table>
       </div>
-      <p class="text-xs text-gray-400 mt-2">* Total dihitung otomatis = Hari × Rp6.000</p>
     </section>
 
-    <!-- Actions -->
-    <div class="mt-4 flex flex-wrap gap-2 no-print">
-      <button id="btn-png" class="px-4 py-2 bg-indigo-600 text-white rounded">Export PNG</button>
-      <button id="btn-csv" class="px-4 py-2 bg-gray-800 text-white rounded">Download CSV</button>
-      <button id="btn-print" class="px-4 py-2 bg-white border rounded">Print</button>
-      <button id="btn-clear" class="px-4 py-2 bg-red-50 text-red-600 border rounded">Hapus Semua</button>
-    </div>
+    <footer class="mt-6 text-xs text-gray-400 text-center">Made with ❤️ | Simpan file ini dan jalankan offline atau deploy di Vercel.</footer>
   </div>
 
   <script src="https://unpkg.com/html-to-image@1.11.12/dist/html-to-image.js"></script>
