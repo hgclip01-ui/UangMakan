@@ -4,35 +4,39 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Catatan Uang Makan</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-  <!-- UI Awal -->
-  <div id="welcome" class="welcome-screen">
-    <img src="logo.png" alt="Logo" class="logo">
-    <button id="startBtn" class="start-btn">Mulai</button>
+
+  <!-- Halaman Awal (Welcome Screen) -->
+  <div id="welcome" style="text-align:center; padding-top:50px;">
+    <!-- Logo -->
+    <img src="assets/logo.png" alt="Logo" style="width:120px; margin-bottom:20px;">
+
+    <!-- Tombol Mulai -->
+    <button id="startBtn">Mulai</button>
   </div>
 
-  <!-- Aplikasi -->
-  <div id="app" class="glass hidden">
-    <h1 class="judul">Catatan Uang Makan</h1>
+  <!-- Aplikasi Utama -->
+  <div id="app" class="hidden" style="text-align:center; margin-top:40px;">
+    <h2>Catatan Uang Makan</h2>
 
-    <div class="input-area">
-      <input type="text" id="namaInput" placeholder="Nama Orang">
-      <input type="number" id="hariInput" placeholder="Jumlah Hari">
-      <button id="addBtn">+</button>
-    </div>
+    <!-- Form input -->
+    <input id="namaInput" type="text" placeholder="Nama">
+    <input id="hariInput" type="number" placeholder="Hari">
+    <button id="addBtn">Tambah</button>
 
-    <div id="listOrang" class="list"></div>
+    <!-- Daftar orang -->
+    <div id="listOrang" style="margin-top:20px;"></div>
 
-    <div class="total">
-      <span>Total</span>
-      <strong id="grandTotal">Rp 0</strong>
-    </div>
+    <!-- Total -->
+    <h3 style="margin-top:20px;">Total: <span id="grandTotal">Rp 0</span></h3>
 
-    <button id="downloadBtn" class="download">Download</button>
+    <!-- Tombol Download -->
+    <button id="downloadBtn">Download PNG</button>
   </div>
 
-  <script src="js/app.js"></script>
+  <!-- Script utama -->
+  <script src="assets/app.js"></script>
 </body>
 </html>
