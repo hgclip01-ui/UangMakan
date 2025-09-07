@@ -1,4 +1,4 @@
-/* Background gradient dongker */
+/* Background gradient */
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
@@ -8,78 +8,61 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: 10px;
+  padding: 12px;
 }
 
-/* Wrapper biar pas di hp */
-#app, #splash, #exportArea {
+/* Wrapper */
+#app {
   width: 100%;
-  max-width: 420px; /* pas ukuran layar hp */
+  max-width: 420px;
   margin: auto;
 }
 
-/* Splash Screen */
-#splash {
-  text-align: center;
-  animation: fadeIn 1s ease;
-  margin-top: 20%;
-}
-#splash .logo {
-  width: 60px;
-  margin-bottom: 16px;
-}
-#splash h1 {
-  font-size: 20px;
-  margin-bottom: 16px;
-}
-#splash button {
-  padding: 10px 18px;
-  background: #2563eb;
-  border: none;
+/* Card Glass */
+.glass {
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 12px;
-  color: white;
-  font-size: 14px;
-  cursor: pointer;
+  padding: 14px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.25);
 }
-.hidden { display: none; }
 
 /* Judul */
 .judul {
   text-align: center;
   font-size: 20px;
-  margin: 16px 0;
-}
-
-/* Glassmorphism Card */
-.glass {
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 12px;
-  padding: 10px;
-  backdrop-filter: blur(8px);
-  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  margin: 12px 0 18px;
 }
 
 /* Input Area */
 .input-area {
   display: flex;
+  flex-wrap: wrap;
   gap: 6px;
   margin-bottom: 14px;
 }
 .input-area input {
-  flex: 1;
-  padding: 8px;
+  flex: 1 1 48%;
+  padding: 10px;
   border: none;
   border-radius: 10px;
   font-size: 14px;
+  box-sizing: border-box;
 }
 .input-area button {
+  flex: 0 0 auto;
   background: #2563eb;
   color: white;
   border: none;
-  padding: 8px 12px;
+  padding: 8px 14px;
   border-radius: 10px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 18px;
+}
+@media (max-width: 400px) {
+  .input-area input {
+    flex: 1 1 100%;
+  }
 }
 
 /* List Orang */
@@ -97,16 +80,9 @@ body {
   background: rgba(255, 255, 255, 0.2);
   font-size: 14px;
 }
-.orang span {
-  font-weight: bold;
-}
-.orang small {
-  font-size: 12px;
-  opacity: 0.9;
-}
 .orang .aksi {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   cursor: pointer;
   font-size: 16px;
 }
@@ -123,21 +99,24 @@ body {
 .download {
   margin-top: 14px;
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   background: #1e40af;
   border: none;
   border-radius: 12px;
   color: white;
-  font-size: 14px;
+  font-size: 15px;
   cursor: pointer;
 }
 
-/* Export Area styling */
+/* Export Area */
 #exportArea {
   background: linear-gradient(135deg, #0f172a, #1e3a8a, #2563eb);
-  padding: 14px;
+  padding: 16px;
   border-radius: 12px;
   color: white;
+  width: 100%;
+  max-width: 420px;
+  margin: auto;
 }
 #exportArea h1 {
   text-align: center;
@@ -162,8 +141,5 @@ body {
   opacity: 0.8;
 }
 
-/* Animasi */
-@keyframes fadeIn {
-  from {opacity: 0;}
-  to {opacity: 1;}
-}
+/* Hidden */
+.hidden { display: none; }
