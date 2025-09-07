@@ -13,10 +13,13 @@ const exportArea = document.getElementById("exportArea");
 const splash = document.getElementById("splash");
 const startBtn = document.getElementById("startBtn");
 const app = document.getElementById("app");
-startBtn.addEventListener("click", () => {
-  splash.classList.add("hidden");
-  app.classList.remove("hidden");
-});
+
+if (startBtn) {
+  startBtn.addEventListener("click", () => {
+    splash.classList.add("hidden");
+    app.classList.remove("hidden");
+  });
+}
 
 // Tambah data
 addBtn.addEventListener("click", () => {
