@@ -1,25 +1,23 @@
 const hargaPerHari = 6000;
 let data = [];
 
+// Elemen UI
 const namaInput = document.getElementById("namaInput");
 const hariInput = document.getElementById("hariInput");
 const addBtn = document.getElementById("addBtn");
 const listOrang = document.getElementById("listOrang");
 const grandTotal = document.getElementById("grandTotal");
 const downloadBtn = document.getElementById("downloadBtn");
-const exportArea = document.getElementById("exportArea");
 
-// Splash screen
-const splash = document.getElementById("splash");
+// Welcome Screen
+const welcome = document.getElementById("welcome");
 const startBtn = document.getElementById("startBtn");
 const app = document.getElementById("app");
 
-if (startBtn) {
-  startBtn.addEventListener("click", () => {
-    splash.classList.add("hidden");
-    app.classList.remove("hidden");
-  });
-}
+startBtn.addEventListener("click", () => {
+  welcome.classList.add("hidden");
+  app.classList.remove("hidden");
+});
 
 // Tambah data
 addBtn.addEventListener("click", () => {
@@ -82,62 +80,62 @@ function hapusOrang(i) {
   }
 }
 
-// Render Export
-function renderExport() {
-  exportArea.innerHTML = `
-    <h1>Catatan Uang Makan</h1>
-    <div id="listOrangExport"></div>
-    <div class="total">
-      <span>Total</span>
-      <strong id="grandTotalExport">Rp 0</strong>
-    </div>
-    <p class="uang-sampah">+ Uang Sampah</p>
-    <p class="footer"><span id="tanggalNow"></span></p>
-  `;
+// Download PNG via Canvas API
+downloadBtn.addEventListener("click", () => {
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
 
-  const listExport = document.getElementById("listOrangExport");
-  const grandTotalExport = document.getElementById("grandTotalExport");
+  // Ukuran canvas
+  canvas.width = 800;
+  canvas.height = 1100;
 
+  // Background gradient
+  const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+  gradient.addColorStop(0, "#0f172a");
+  gradient.addColorStop(0.5, "#1e3a8a");
+  gradient.addColorStop(1, "#2563eb");
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Judul
+  ctx.fillStyle = "white";
+  ctx.font = "bold 24px Segoe UI";
+  ctx.textAlign = "center";
+  ctx.fillText("📑 Catatan Uang Makan", canvas.width / 2, 60);
+
+  // Data
+  ctx.textAlign = "left";
+  ctx.font = "16px Segoe UI";
+  let y = 120;
   let total = 0;
   data.forEach((item, i) => {
     const subtotal = item.hari * hargaPerHari;
     total += subtotal;
-
-    const div = document.createElement("div");
-    div.innerText = `${i+1}. ${item.nama} - ${item.hari} Hari × Rp${hargaPerHari.toLocaleString()} = Rp${subtotal.toLocaleString()}`;
-    listExport.appendChild(div);
+    ctx.fillText(`${i+1}. ${item.nama} - ${item.hari} Hari × Rp${hargaPerHari.toLocaleString()} = Rp${subtotal.toLocaleString()}`, 60, y);
+    y += 28;
   });
 
-  grandTotalExport.innerText = "Rp " + total.toLocaleString();
+  // Total
+  y += 20;
+  ctx.font = "bold 18px Segoe UI";
+  ctx.fillText(`Total: Rp ${total.toLocaleString()}`, 60, y);
+
+  // Uang sampah
+  y += 26;
+  ctx.font = "italic 14px Segoe UI";
+  ctx.fillText("+ Uang Sampah", 60, y);
 
   // Tanggal
+  y += 50;
   const now = new Date();
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-  document.getElementById("tanggalNow").innerText = now.toLocaleDateString("id-ID", options);
-}
+  ctx.font = "12px Segoe UI";
+  ctx.textAlign = "center";
+  ctx.fillText(now.toLocaleDateString("id-ID", options), canvas.width / 2, y);
 
-// Download JPG
-downloadBtn.addEventListener("click", () => {
-  renderExport();
-  exportArea.classList.remove("hidden");
-  document.getElementById("loading").classList.remove("hidden"); // tampilkan spinner
-
-  setTimeout(() => {
-    html2canvas(exportArea, {
-      backgroundColor: "#0f172a",
-      scale: 2
-    }).then(canvas => {
-      const link = document.createElement("a");
-      link.download = "uang-makan.jpg";
-      link.href = canvas.toDataURL("image/jpeg", 0.9);
-      link.click();
-
-      exportArea.classList.add("hidden");
-      document.getElementById("loading").classList.add("hidden"); // sembunyikan spinner
-    }).catch(err => {
-      console.error("Gagal download:", err);
-      alert("Download gagal, coba ulangi.");
-      document.getElementById("loading").classList.add("hidden"); // sembunyikan spinner
-    });
-  }, 300);
+  // Simpan PNG
+  const link = document.createElement("a");
+  link.download = "uang-makan.png";
+  link.href = canvas.toDataURL("image/png");
+  link.click();
 });
