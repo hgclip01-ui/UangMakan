@@ -2,65 +2,41 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Uang Makan</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <title>Catatan Uang Makan</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="bg-gradient-to-br from-blue-900 via-indigo-900 to-gray-900 min-h-screen flex items-center justify-center p-4">
+<body>
+  <!-- Splash Screen -->
+  <div id="splash">
+    <img src="assets/logo.png" alt="Logo" class="logo">
+    <h1>Catatan Uang Makan</h1>
+    <button id="mulaiBtn">Mulai</button>
+  </div>
 
-  <!-- UI Awal -->
-  <div id="start-screen" class="text-center text-white bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-xl w-full max-w-sm animate-fadeIn">
-    <div class="flex justify-center mb-6">
-      <img src="assets/logo.png" alt="Logo" class="w-24 h-24 rounded-full shadow-lg border-4 border-white/50">
+  <!-- Aplikasi -->
+  <div id="app" class="hidden">
+    <h1 class="judul">Catatan Uang Makan</h1>
+
+    <div class="input-area glass">
+      <input type="text" id="namaInput" placeholder="Nama Orang">
+      <input type="number" id="hariInput" placeholder="Jumlah Hari">
+      <button id="tambahBtn">+</button>
     </div>
-    <h1 class="text-2xl font-bold mb-6">Aplikasi Uang Makan</h1>
-    <button onclick="startApp()" class="w-full py-3 bg-yellow-400 text-indigo-900 font-bold rounded-xl shadow-lg hover:scale-105 transition active:scale-95">
-      Mulai
+
+    <div id="listOrang" class="list"></div>
+
+    <div class="total glass">
+      <span>Total</span>
+      <strong id="grandTotal">Rp 0</strong>
+    </div>
+
+    <button id="downloadBtn" class="download">
+      📸 Download PNG
     </button>
   </div>
 
-  <!-- Halaman Utama -->
-  <div id="app" class="hidden w-full max-w-md p-4 bg-white/10 backdrop-blur-lg rounded-2xl shadow-xl text-white">
-    <div id="cards" class="grid gap-4">
-      <!-- Card orang -->
-      <div class="card flex items-center gap-3 p-4 bg-white/20 backdrop-blur-md rounded-2xl shadow-lg opacity-0 translate-y-6 transition-all duration-700 delay-100">
-        <span class="font-bold text-lg text-yellow-300">1</span>
-        <div class="flex-1">
-          <p class="font-semibold">Budi</p>
-          <input type="text" placeholder="Hari (Senin, Selasa...)" class="hari w-full border rounded-lg px-3 py-2 mt-2 text-black text-sm">
-          <div class="flex gap-2 mt-2">
-            <input type="date" class="tanggal flex-1 border rounded-lg px-2 py-2 text-black text-sm">
-            <input type="time" class="jam flex-1 border rounded-lg px-2 py-2 text-black text-sm">
-            <input type="number" placeholder="Harga" class="harga w-24 border rounded-lg px-2 py-2 text-black text-sm">
-          </div>
-        </div>
-      </div>
-
-      <div class="card flex items-center gap-3 p-4 bg-white/20 backdrop-blur-md rounded-2xl shadow-lg opacity-0 translate-y-6 transition-all duration-700 delay-300">
-        <span class="font-bold text-lg text-yellow-300">2</span>
-        <div class="flex-1">
-          <p class="font-semibold">Siti</p>
-          <input type="text" placeholder="Hari (Senin, Selasa...)" class="hari w-full border rounded-lg px-3 py-2 mt-2 text-black text-sm">
-          <div class="flex gap-2 mt-2">
-            <input type="date" class="tanggal flex-1 border rounded-lg px-2 py-2 text-black text-sm">
-            <input type="time" class="jam flex-1 border rounded-lg px-2 py-2 text-black text-sm">
-            <input type="number" placeholder="Harga" class="harga w-24 border rounded-lg px-2 py-2 text-black text-sm">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Total + Tombol -->
-    <div class="mt-6 text-center">
-      <p class="font-bold text-lg mb-4">Total Harga: <span id="total">0</span></p>
-      <button onclick="downloadPNG()" class="w-full py-3 bg-yellow-400 text-indigo-900 font-bold rounded-xl shadow-lg hover:scale-105 transition active:scale-95">
-        Download PNG
-      </button>
-    </div>
-  </div>
-
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
