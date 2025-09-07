@@ -1,42 +1,32 @@
-const splash = document.getElementById("splash");
-const app = document.getElementById("app");
-const mulaiBtn = document.getElementById("mulaiBtn");
+const hargaPerHari = 6000;
+let data = [];
 
 const namaInput = document.getElementById("namaInput");
 const hariInput = document.getElementById("hariInput");
-const tambahBtn = document.getElementById("tambahBtn");
+const addBtn = document.getElementById("addBtn");
 const listOrang = document.getElementById("listOrang");
-const grandTotalEl = document.getElementById("grandTotal");
+const grandTotal = document.getElementById("grandTotal");
 const downloadBtn = document.getElementById("downloadBtn");
+const exportArea = document.getElementById("exportArea");
 
-const listOrangExport = document.getElementById("listOrangExport");
-const grandTotalExport = document.getElementById("grandTotalExport");
-const tanggalNow = document.getElementById("tanggalNow");
-
-let data = [];
-const hargaPerHari = 6000; // Bisa diubah sesuai kebutuhan
-
-// Mulai dari splash
-mulaiBtn.addEventListener("click", () => {
-  splash.style.display = "none";
-  app.classList.remove("hidden");
-});
-
-// Tambah orang
-tambahBtn.addEventListener("click", () => {
+// Tambah data
+addBtn.addEventListener("click", () => {
   const nama = namaInput.value.trim();
-  const hari = parseInt(hariInput.value) || 0;
+  const hari = parseInt(hariInput.value.trim());
 
-  if (!nama || hari <= 0) return;
+  if (!nama || isNaN(hari) || hari <= 0) {
+    alert("Isi nama dan jumlah hari dengan benar!");
+    return;
+  }
 
   data.push({ nama, hari });
-  render();
   namaInput.value = "";
   hariInput.value = "";
+  renderList();
 });
 
-// Render list
-function render() {
+// Render list di UI
+function renderList() {
   listOrang.innerHTML = "";
   let total = 0;
 
@@ -45,10 +35,10 @@ function render() {
     total += subtotal;
 
     const div = document.createElement("div");
-    div.className = "orang glass";
+    div.classList.add("orang");
     div.innerHTML = `
       <div>
-        <span>${i + 1}. ${item.nama}</span><br>
+        <span>${i+1}. ${item.nama}</span><br>
         <small>${item.hari} Hari × Rp${hargaPerHari.toLocaleString()} = Rp${subtotal.toLocaleString()}</small>
       </div>
       <div class="aksi">
@@ -59,56 +49,74 @@ function render() {
     listOrang.appendChild(div);
   });
 
-  grandTotalEl.innerText = "Rp " + total.toLocaleString();
+  grandTotal.innerText = "Rp " + total.toLocaleString();
 }
 
-// Hapus orang
-function hapusOrang(index) {
-  data.splice(index, 1);
-  render();
-}
-
-// Edit orang
-function editOrang(index) {
-  const baruHari = prompt("Masukkan jumlah hari baru:", data[index].hari);
-  if (baruHari !== null && !isNaN(baruHari)) {
-    data[index].hari = parseInt(baruHari);
-    render();
+// Edit
+function editOrang(i) {
+  const item = data[i];
+  const newHari = prompt(`Edit jumlah hari untuk ${item.nama}:`, item.hari);
+  if (newHari !== null && !isNaN(newHari) && newHari > 0) {
+    data[i].hari = parseInt(newHari);
+    renderList();
   }
 }
 
-// Render untuk export
-function renderExport() {
-  listOrangExport.innerHTML = "";
-  let total = 0;
+// Hapus
+function hapusOrang(i) {
+  if (confirm("Hapus data ini?")) {
+    data.splice(i, 1);
+    renderList();
+  }
+}
 
+// Render Export
+function renderExport() {
+  exportArea.innerHTML = `
+    <h1>Catatan Uang Makan</h1>
+    <div id="listOrangExport"></div>
+    <div class="total">
+      <span>Total</span>
+      <strong id="grandTotalExport">Rp 0</strong>
+    </div>
+    <p class="uang-sampah">+ Uang Sampah</p>
+    <p class="footer"><span id="tanggalNow"></span></p>
+  `;
+
+  const listExport = document.getElementById("listOrangExport");
+  const grandTotalExport = document.getElementById("grandTotalExport");
+
+  let total = 0;
   data.forEach((item, i) => {
     const subtotal = item.hari * hargaPerHari;
     total += subtotal;
 
     const div = document.createElement("div");
     div.innerHTML = `${i+1}. ${item.nama} - ${item.hari} Hari × Rp${hargaPerHari.toLocaleString()} = Rp${subtotal.toLocaleString()}`;
-    listOrangExport.appendChild(div);
+    listExport.appendChild(div);
   });
 
   grandTotalExport.innerText = "Rp " + total.toLocaleString();
 
-  // Tanggal sekarang
+  // Tanggal
   const now = new Date();
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-  tanggalNow.innerText = now.toLocaleDateString("id-ID", options);
+  document.getElementById("tanggalNow").innerText = now.toLocaleDateString("id-ID", options);
 }
 
 // Download PNG
 downloadBtn.addEventListener("click", () => {
   renderExport();
-  html2canvas(document.getElementById("exportArea"), {
-    backgroundColor: "#0f172a", // biar gradient tetap terlihat
+  html2canvas(exportArea, {
+    backgroundColor: "#0f172a",
     scale: 2
   }).then(canvas => {
     const link = document.createElement("a");
     link.download = "uang-makan.png";
     link.href = canvas.toDataURL("image/png");
     link.click();
+  }).catch(err => {
+    console.error("Gagal download:", err);
+    alert("Download gagal, coba ulangi.");
   });
 });
