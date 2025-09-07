@@ -1,15 +1,123 @@
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.animate-fadeIn {
-  animation: fadeIn 0.6s ease-out;
+/* Background gradient dongker */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0f172a, #1e3a8a, #2563eb);
+  color: white;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* Efek glowing lembut untuk tombol */
-button {
-  transition: box-shadow 0.3s ease;
+/* Splash Screen */
+#splash {
+  text-align: center;
+  animation: fadeIn 1s ease;
 }
-button:hover {
-  box-shadow: 0 0 20px rgba(255, 255, 0, 0.6);
+#splash .logo {
+  width: 80px;
+  margin-bottom: 20px;
+}
+#splash h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+#splash button {
+  padding: 10px 20px;
+  background: #2563eb;
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+.hidden { display: none; }
+
+/* Judul */
+.judul {
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+/* Glassmorphism Card */
+.glass {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 12px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+/* Input Area */
+.input-area {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.input-area input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 12px;
+}
+.input-area button {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/* List Orang */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.orang {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.2);
+}
+.orang span {
+  font-weight: bold;
+}
+.orang .aksi {
+  display: flex;
+  gap: 10px;
+  cursor: pointer;
+}
+
+/* Total */
+.total {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+}
+
+/* Tombol Download */
+.download {
+  margin-top: 20px;
+  width: 100%;
+  padding: 12px;
+  background: #1e40af;
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Animasi */
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
 }
