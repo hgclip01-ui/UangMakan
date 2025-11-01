@@ -14,9 +14,17 @@ const welcome = document.getElementById("welcome");
 const startBtn = document.getElementById("startBtn");
 const app = document.getElementById("app");
 
+// Tombol mulai dengan efek suara dan transisi
 startBtn.addEventListener("click", () => {
-  welcome.classList.add("hidden");
-  app.classList.remove("hidden");
+  const sound = document.getElementById("clickSound");
+  sound.currentTime = 0;
+  sound.play();
+
+  welcome.classList.add("fade-out");
+  setTimeout(() => {
+    welcome.classList.add("hidden");
+    app.classList.remove("hidden");
+  }, 400);
 });
 
 // Load data dari localStorage
@@ -88,7 +96,7 @@ function hapusOrang(i) {
   }
 }
 
-// Download PNG
+// Download PNG (tidak diubah)
 downloadBtn.addEventListener("click", () => {
   const rowHeight = 30;
   const headerHeight = 150;
@@ -101,7 +109,6 @@ downloadBtn.addEventListener("click", () => {
   canvas.width = 800;
   canvas.height = Math.max(400, canvasHeight);
 
-  // Background gradient
   const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
   gradient.addColorStop(0, "#0f172a");
   gradient.addColorStop(0.5, "#1e3a8a");
@@ -109,24 +116,20 @@ downloadBtn.addEventListener("click", () => {
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // Judul
   ctx.fillStyle = "white";
   ctx.font = "bold 24px Segoe UI";
   ctx.textAlign = "center";
   ctx.fillText("Catatan Uang Makan Supplier", canvas.width / 2, 60);
 
-  // Definisi kolom
   const colNo   = { x: 60,  w: 50 };
   const colNama = { x: 110, w: 260 };
   const colHari = { x: 370, w: 170 };
   const colSub  = { x: 540, w: 200 };
   const tableRight = colSub.x + colSub.w;
 
-  // Highlight header background
   ctx.fillStyle = "rgba(255,255,255,0.1)";
   ctx.fillRect(colNo.x, 90, tableRight - colNo.x, 30);
 
-  // Header teks
   ctx.fillStyle = "white";
   ctx.font = "bold 16px Segoe UI";
   ctx.textAlign = "center"; ctx.fillText("No", colNo.x + colNo.w/2, 110);
@@ -134,77 +137,53 @@ downloadBtn.addEventListener("click", () => {
   ctx.textAlign = "center"; ctx.fillText("Hari", colHari.x + colHari.w/2, 110);
   ctx.textAlign = "right";  ctx.fillText("Subtotal", colSub.x + colSub.w - 8, 110);
 
-  // Garis atas header
   ctx.beginPath();
   ctx.moveTo(colNo.x, 90);
   ctx.lineTo(tableRight, 90);
   ctx.strokeStyle = "rgba(255,255,255,0.8)";
   ctx.stroke();
 
-  // Garis bawah header
   ctx.beginPath();
   ctx.moveTo(colNo.x, 120);
   ctx.lineTo(tableRight, 120);
   ctx.stroke();
 
-  // Data baris
   ctx.font = "14px Segoe UI";
   let y = 150;
   let total = 0;
   data.forEach((item, i) => {
     const subtotal = item.hari * hargaPerHari;
     total += subtotal;
-
-    // Background striped
     if (i % 2 === 0) {
       ctx.fillStyle = "rgba(255,255,255,0.05)";
       ctx.fillRect(colNo.x, y - 20, tableRight - colNo.x, rowHeight);
     }
     ctx.fillStyle = "white";
-
-    // No
     ctx.textAlign = "center";
     ctx.fillText(`${i+1}`, colNo.x + colNo.w/2, y);
-
-    // Nama
     ctx.textAlign = "left";
     ctx.fillText(item.nama, colNama.x + 8, y);
-
-    // Hari
     ctx.textAlign = "center";
     ctx.fillText(`${item.hari} × Rp${hargaPerHari.toLocaleString()}`, colHari.x + colHari.w/2, y);
-
-    // Subtotal
     ctx.textAlign = "right";
     ctx.fillText(`Rp${subtotal.toLocaleString()}`, colSub.x + colSub.w - 8, y);
-
-    // Garis antar baris
     ctx.beginPath();
     ctx.moveTo(colNo.x, y + 8);
     ctx.lineTo(tableRight, y + 8);
     ctx.strokeStyle = "rgba(255,255,255,0.2)";
     ctx.stroke();
-
     y += rowHeight;
   });
 
-  // Simpan posisi akhir tabel
   const endY = y;
-
-  // Border kiri
   ctx.beginPath();
   ctx.moveTo(colNo.x, 90);
   ctx.lineTo(colNo.x, endY);
+  ctx.moveTo(tableRight, 90);
+  ctx.lineTo(tableRight, endY);
   ctx.strokeStyle = "rgba(255,255,255,0.8)";
   ctx.stroke();
 
-  // Border kanan
-  ctx.beginPath();
-  ctx.moveTo(tableRight, 90);
-  ctx.lineTo(tableRight, endY);
-  ctx.stroke();
-
-  // Garis pemisah antar kolom
   ctx.beginPath();
   ctx.moveTo(colNo.x + colNo.w, 90); ctx.lineTo(colNo.x + colNo.w, endY);
   ctx.moveTo(colNama.x + colNama.w, 90); ctx.lineTo(colNama.x + colNama.w, endY);
@@ -212,14 +191,12 @@ downloadBtn.addEventListener("click", () => {
   ctx.strokeStyle = "rgba(255,255,255,0.4)";
   ctx.stroke();
 
-  // Garis bawah tabel
   ctx.beginPath();
   ctx.moveTo(colNo.x, endY);
   ctx.lineTo(tableRight, endY);
   ctx.strokeStyle = "rgba(255,255,255,0.8)";
   ctx.stroke();
 
-  // Total
   y += 30;
   ctx.font = "bold 18px Segoe UI";
   ctx.textAlign = "left";
@@ -227,13 +204,11 @@ downloadBtn.addEventListener("click", () => {
   ctx.textAlign = "right";
   ctx.fillText(`Rp ${total.toLocaleString()}`, colSub.x + colSub.w - 8, y);
 
-  // Uang sampah
   y += 30;
   ctx.font = "italic 14px Segoe UI";
   ctx.textAlign = "right";
   ctx.fillText("+ Uang Sampah", colSub.x + colSub.w - 8, y);
 
-  // Tanggal
   y += 60;
   const now = new Date();
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -241,7 +216,6 @@ downloadBtn.addEventListener("click", () => {
   ctx.textAlign = "center";
   ctx.fillText(now.toLocaleDateString("id-ID", options), canvas.width / 2, y);
 
-  // Simpan PNG
   const link = document.createElement("a");
   link.download = "uang-makan.png";
   link.href = canvas.toDataURL("image/png");
